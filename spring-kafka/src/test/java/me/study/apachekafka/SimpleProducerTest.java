@@ -7,7 +7,6 @@ class SimpleProducerTest {
     @Test
     void produce() {
         SimpleProducer simpleProducer = new SimpleProducer();
-
         simpleProducer.produce();
     }
 
