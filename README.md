@@ -10,7 +10,8 @@ kafka : 2.5.0
 
 #### access
 ```
-docker exec -it [container ID or Name] sh
+docker exec -it [container ID or Name] bash
+ex) docker exec -it spring-kafka_kafka_1 bash
 ```
 
 ---
