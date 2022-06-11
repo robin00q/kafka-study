@@ -1,11 +1,6 @@
-package me.study.apachekafka;
+package me.study.apachekafka.producer;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Partitioner;
-import org.apache.kafka.clients.producer.UniformStickyPartitioner;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class SimpleProducerTest {
 

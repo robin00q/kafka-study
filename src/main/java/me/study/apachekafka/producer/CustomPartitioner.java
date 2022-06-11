@@ -1,4 +1,4 @@
-package me.study.apachekafka;
+package me.study.apachekafka.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Partitioner;
