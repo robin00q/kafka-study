@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.Future;
 
 /**
@@ -24,8 +25,55 @@ public class SimpleProducer {
     private static final String TOPIC_NAME = "test";
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
 
+    /**
+     * 트랜잭션 프로듀서
+     */
+    public void transactionProducer() {
+        Properties properties = createProperties();
+        properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, UUID.randomUUID().toString());
+
+        // 트랜잭션 프로듀서 생성
+        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
+
+        // 레코드 생성
+        String messageValue = "testMessage";
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, messageValue);
+
+        producer.initTransactions();
+        producer.beginTransaction();
+        producer.send(record);
+        try {
+            Thread.sleep(10000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        producer.commitTransaction();
+
+        flushAndClose(producer);
+    }
+
+    /**
+     * 멱등성 프로듀서
+     */
+    public void idempotentProducer() {
+        Properties properties = createProperties();
+        properties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+
+        // 멱등성 프로듀서 생성
+        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
+
+        // 레코드 생성
+        String messageValue = "testMessage";
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, messageValue);
+
+        producer.send(record);
+
+        flushAndClose(producer);
+    }
+
     public void produceWithoutMessageKey() {
-        KafkaProducer<String, String> producer = new KafkaProducer<>(createProperties());
+        Properties properties = createProperties();
+        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
         // 레코드 생성
         // 현재는 토픽명과 메세지값만 생성한다.

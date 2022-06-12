@@ -31,4 +31,14 @@ class SimpleProducerTest {
         producer.produceAndGetResult();
     }
 
+    @Test
+    void idempotentProducer() {
+        producer.idempotentProducer();
+    }
+
+    @Test
+    void transactionProducer() {
+        producer.transactionProducer();
+    }
+
 }

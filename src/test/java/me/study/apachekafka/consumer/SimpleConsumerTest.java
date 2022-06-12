@@ -7,6 +7,11 @@ class SimpleConsumerTest {
     private SimpleConsumer simpleConsumer = new SimpleConsumer();
 
     @Test
+    void transactionConsumer() {
+        simpleConsumer.transactionConsumer();
+    }
+
+    @Test
     void consume() {
         simpleConsumer.consume();
     }

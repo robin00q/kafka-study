@@ -23,6 +23,25 @@ public class SimpleConsumer {
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
     private static final String GROUP_ID = "test-group";
 
+    public void transactionConsumer() {
+        Properties properties = createProperties();
+        properties.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
+
+        // 메세지를 가져올 토픽을 구독한다.
+        consumer.subscribe(Collections.singletonList(TOPIC_NAME));
+
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(1));
+            for (ConsumerRecord<String, String> record : records) {
+                log.info("record: {}", record);
+            }
+            consumer.commitSync();
+        }
+    }
+
     public void consume() {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(createProperties());
 
